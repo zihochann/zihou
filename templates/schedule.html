@@ -1,0 +1,45 @@
+<div class="container" style="margin-top: 15px;">
+    <div class="row">
+        <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="input-group">
+                <h3>{{ year }}年{{ month }}月</h3>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn" onclick="location.href='/?year={{ prev_y }}&month={{ prev_m }}'">＜先月</button>
+                <button type="button" class="btn" onclick="location.href='/?year={{ next_y }}&month={{ next_m }}'">来月＞</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <style>
+            td > a {
+                text-decoration: none;
+            }
+            td > a > div {
+                padding: 2px;
+                padding-left: 5px;
+            }
+        </style>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center; width: 14.2%;">月曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">火曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">水曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">木曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">金曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">土曜日</th>
+                        <th scope="col" style="text-align: center; width: 14.2%;">日曜日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ monthset |safe }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <p>タイムゾーン：日本標準時(UTC+9)</p>
+    </div>
+</div>

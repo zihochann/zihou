@@ -1,0 +1,172 @@
+<div class="container" style="margin-top: 15px;">
+    <div class="row">
+        <h3>{{ title }}</h3>
+        <form>
+            <p>配信プラットフォーム</p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="p-youtube" value="youtube"{{ youtube_checked }}>
+                <label class="form-check-label" for="p-youtube">Youtube</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="p-bilibili" value="bilibili"{{ bilibili_checked }}>
+                <label class="form-check-label" for="p-bilibili">Bilibili</label>
+            </div>
+            <p style="margin-top: 15px;">予約の時間 タイムゾーン：日本標準時(UTC+9)</p>
+            <div class=""form-check>
+                <input style="max-width: 10em; float: left;" type="text" class="form-control inline-flex" value="{{ live_date }}" data-date-format="yyyy-mm-dd" id="live-date">
+                <div class="input-group bootstrap-timepicker timepicker" style="max-width: 10em;">
+                    <input id="live-time" class="form-control input-small" type="text">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                </div>
+            </div>
+            <p style="margin-top: 15px;">出席者</p>
+            {{ vtbs |safe }}
+        </form>
+        <div class="row g-2 text-danger" style="padding-top: 12px;">
+            <span id="error-info"></span>
+        </div>
+        <div class="col-12" style="margin-top: 15px;">
+            <button class="btn btn-primary" id="btnop" onclick="{{ apply_code }}">{{ apply }}</button>
+            <button class="btn btn-danger{{ remove_hide }}" id="btndel" onclick="removeLive();">予約を削除</button>
+            <button class="btn{{ remove_hide }}" onclick="back_to_schedule();">キャンセル</button>
+        </div>
+    </div>
+</div>
+{% csrf_token %}
+<script>
+    var live_id = {{ liveid }}, back_year = {{ backy }}, back_month = {{ backm }};
+
+    $(function(){
+        $('#live-date').datepicker();
+        $('#live-time').timepicker({
+            defaultTime: "{{ live_time }}",
+        });
+    });
+
+    function back_to_schedule() {
+        location.href = '/?year=' + back_year + '&month=' + back_month;
+    }
+
+    var vtbs = {{ vtbcount }};
+    function get_names() {
+        // Generate the name.
+        var names = []
+        for(var i=0; i<vtbs; ++i) {
+            vtb_check = $('#vtb'+i);
+            if(vtb_check.is(':checked')) {
+                names.push(vtb_check.val());
+            }
+        }
+        return names;
+    }
+
+    function get_platforms() {
+        var platform = []
+        p_youtube = $('#p-youtube');
+        if(p_youtube.is(':checked')) {
+            platform.push(p_youtube.val());
+        }
+        p_bilibili = $('#p-bilibili');
+        if(p_bilibili.is(':checked')) {
+            platform.push(p_bilibili.val());
+        }
+        return platform;
+    }
+
+    function removeLive() {
+        var t_button = $('#btnop');
+        var t_delbutton = $('#btndel');
+        t_button.attr('disabled', '');
+        t_delbutton.attr('disabled', '');
+        // Push the data.
+        $.ajax({
+            type: 'POST',
+            url:"/removelive/",
+            data: {
+                live_id: live_id,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            },
+            dataType : "json",
+            success: function(response) {
+                //Check the response.
+                if(response.status == 'ok') {
+                    back_to_schedule();
+                    return;
+                }
+                //Now we have to display the error message.
+                $('#error-info').html("エラー：" + response.info);
+                t_button.removeAttr('disabled');
+                t_delbutton.removeAttr('disabled');
+            }
+        });
+    }
+
+    function updateLive() {
+        // Generate live info.
+        var names = get_names();
+        var platform = get_platforms();
+        var t_button = $('#btnop');
+        var t_delbutton = $('#btndel');
+        t_button.attr('disabled', '');
+        t_delbutton.attr('disabled', '');
+        // Push the data.
+        $.ajax({
+            type: 'POST',
+            url:"/editlive/",
+            data: {
+                live_id: live_id,
+                dt: $('#live-date').val() + ' ' + $('#live-time').val(),
+                vtbs: names.join('|'),
+                platform: platform.join('|'),
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            },
+            dataType : "json",
+            success: function(response) {
+                console.log(response);
+                //Check the response.
+                if(response.status == 'ok') {
+                    back_to_schedule();
+                    return;
+                }
+                //Now we have to display the error message.
+                $('#error-info').html("エラー：" + response.info);
+                t_button.removeAttr('disabled');
+                t_delbutton.removeAttr('disabled');
+            }
+        });
+    }
+
+    function addLive() {
+        // Generate live info.
+        var names = get_names();
+        var platform = get_platforms();
+        var t_button = $('#btnop');
+        var t_delbutton = $('#btndel');
+        t_button.attr('disabled', '');
+        t_delbutton.attr('disabled', '');
+        // Push the data.
+        $.ajax({
+            type: 'POST',
+            url:"/newlive/",
+            data: {
+                dt: $('#live-date').val() + ' ' + $('#live-time').val(),
+                vtbs: names.join('|'),
+                platform: platform.join('|'),
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            },
+            dataType : "json",
+            success: function(response) {
+                console.log(response);
+                //Check the response.
+                if(response.status == 'ok') {
+                    back_to_schedule();
+                    return;
+                }
+                //Now we have to display the error message.
+                $('#error-info').html("エラー：" + response.info);
+                t_button.removeAttr('disabled');
+                t_delbutton.removeAttr('disabled');
+            }
+        });
+    }
+</script>

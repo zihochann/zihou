@@ -1,0 +1,68 @@
+<div class="container" style="margin-top: 12px;">
+    <div class="row">
+        <h3>通知実行状態</h3>
+        <p>{{ rstatus }}</p>
+    </div>
+    <div class="row{{ runhide }}">
+        <div class="col-md">
+            <div class="form-floating col-mb-3">
+                <input type="text" class="form-control" id="tuser" placeholder="">
+                <label for="tuser">Twitter ユーザー名</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating col-mb-3">
+                <input type="password" class="form-control" id="tpass" placeholder="">
+                <label for="tpass">Twitter パスワード</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-2 text-danger" style="padding-top: 12px;">
+        <span id="error-info"></span>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group me-2" role="group">
+                <button id="btnop" type="button" class="btn{{ buttonmode }}" onclick="notify_operate();">{{ buttontext }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% csrf_token %}
+<script>
+    function notify_operate() {
+        // Disable the twitter inputs.
+        var t_user = $('#tuser');
+        var t_pass = $('#tpass');
+        var t_button = $('#btnop');
+        var t_info = $('#error-info');
+        t_user.attr('readonly', '');
+        t_pass.attr('readonly', '');
+        t_button.attr('disabled', '');
+        t_info.html('');
+        // Post request.
+        $.ajax({
+            type: 'POST',
+            url:"/notify/",
+            data: {
+                op: '{{ operate }}',
+                tuser: t_user.val(),
+                tpass: t_pass.val(),
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+            dataType : "json",
+            success:function(response) {
+                //Check the response.
+                if(response.status == 'ok') {
+                    location.href='/notify/';
+                    return;
+                }
+                // Now we have to display the error message.
+                t_info.html("エラー：" + response.info);
+                // Remove the readonly from the inputs.
+                t_user.removeAttr('readonly');
+                t_pass.removeAttr('readonly');
+                t_button.removeAttr('disabled');
+            }
+        });
+    }
+</script>

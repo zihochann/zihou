@@ -1,0 +1,70 @@
+<div class="container" style="padding-top: 12px;">
+    <p>{{ title }}</p>
+    {{ vtbedit |safe }}
+    <div class="row g-2 text-danger" style="padding-top: 12px;">
+        <span id="error-info"></span>
+    </div>
+    <div class="row g-2" style="padding-top: 12px;">
+        <div class="col-12">
+            <button class="btn btn-secondary" id="btnop" onclick="{{ buttonaction }}">{{ buttonname }}</button>
+            <button class="btn" onclick="location.href='/vtblist/'">キャンセル</button>
+        </div>
+    </div>
+
+    {% csrf_token %}
+    <script>
+        var original_name = "{{ originalname }}";
+
+        function editPack() {
+            return {
+                origin: original_name,
+                name: $('#name-str').val(),
+                twitter: $('#twitter-id').val(),
+                bilibili: $('#bilibili-id').val(),
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            };
+        }
+
+        function addVtuber() {
+            var t_button = $('#btnop');
+            t_button.attr('disabled', '');
+            $.ajax({
+                type: 'POST',
+                url:"/vtbadd/",
+                data: editPack(),
+                dataType : "json",
+                success:function(response) {
+                    //Check the response.
+                    if(response.status === 'ok') {
+                        location.href='/vtblist/';
+                        return;
+                    }
+                    //Now we have to display the error message.
+                    $('#error-info').html("エラー：" + response.info);
+                    t_button.removeAttr('disabled');
+                }
+            });
+        }
+
+        function editVtuber() {
+            var t_button = $('#btnop');
+            t_button.attr('disabled', '');
+            $.ajax({
+                type: 'POST',
+                url:"/vtbedit/",
+                data: editPack(),
+                dataType : "json",
+                success:function(response) {
+                    //Check the response.
+                    if(response.status === 'ok') {
+                        location.href='/vtblist/';
+                        return;
+                    }
+                    //Now we have to display the error message.
+                    $('#error-info').html("エラー：" + response.info);
+                    t_button.removeAttr('disabled');
+                }
+            });
+        }
+    </script>
+</div>
