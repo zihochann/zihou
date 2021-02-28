@@ -97,6 +97,7 @@ class NotifierTasks:
         self.lives = lives
         # Sort the live based on the date and time.
         self.lives.sort(key=lambda x: x[ID_TIME])
+        print('init', self.lives)
 
     def add(self, live):
         live_time = live[ID_TIME]
@@ -108,8 +109,10 @@ class NotifierTasks:
             if live_time < queue_time:
                 # Insert the live here.
                 self.lives.insert(ii, live)
+                print('Add', live)
                 return
         # Or else, append at the end of the queue.
+        print('Add', live)
         self.lives.append(live)
 
     def remove(self, live_id):
@@ -117,6 +120,7 @@ class NotifierTasks:
         for ii, queue_live in enumerate(self.lives):
             # Check whether the live id matches.
             if live_id == queue_live[ID_LIVEID]:
+                print('Remove', queue_live)
                 self.lives.pop(ii)
                 return
 
