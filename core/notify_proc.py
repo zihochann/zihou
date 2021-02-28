@@ -172,7 +172,9 @@ def launch_notify(queue: Queue, reflect: Queue):
                 elif cmd == 'login':
                     tuser, tpass = args
                     print('In proc login...')
-                    reflect.put(tasks.sender.login(tuser, tpass))
+                    login_result = tasks.sender.login(tuser, tpass)
+                    print('Result is', login_result)
+                    reflect.put(login_result)
                 elif cmd == 'exit':
                     exit_flag = True
                     # Shutdown the driver here.
@@ -262,13 +264,8 @@ class Notifier:
             print('Start login with', tuser, tpass)
             self.send(['login', [tuser, tpass]])
             # Now hold and wait for the result.
-            result = False
-            for _ in range(MAX_TRIAL):
-                try:
-                    result = self.reflect.get(timeout=60)
-                    break
-                except:
-                    continue
+            result = self.reflect.get()
+            print('Login result in main is', result)
             return result
         return False
 
