@@ -27,7 +27,8 @@ SECRET_KEY = '&2s%08132r1#zmtdxg@onwokl!6l=-4^sya6!x4#=9_9i3xrk-'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'zihou.pythonanywhere.com'
+    'zihou.pythonanywhere.com',
+    '127.0.0.1',
 ]
 
 

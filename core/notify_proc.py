@@ -8,8 +8,8 @@ from core.msg_sender import MessageSender
 
 
 JAPAN_STD_UTC = pytz.timezone('Asia/Tokyo')
-# NOTIFY_RANGE = timedelta(minutes=5)
-NOTIFY_RANGE = timedelta(hours=12)
+NOTIFY_RANGE = timedelta(minutes=5)
+# NOTIFY_RANGE = timedelta(hours=12)
 WAIT_MARGIN = 6
 HEARTBEAT_MARGIN = 2
 

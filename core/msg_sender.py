@@ -94,9 +94,8 @@ class MessageSender:
 
     def login(self, buf_u, buf_p):
         # Goto login
-        self.driver.browser.get('https://twitter.com/login')
-        # Find all the input tags.
         try:
+            self.driver.browser.get('https://twitter.com/login')
             self.driver.wait.until(
                 expected.visibility_of_element_located((By.TAG_NAME, 'form')))
         except:
