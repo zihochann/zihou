@@ -1,5 +1,6 @@
 # 時報システム
-Copyright (C) 2021 Saki <[haolei.ye@anu.edu.au](mailto:haolei.ye@anu.edu.au)>, 
+Copyright (C) 2021 Saki <[saki.tojo@gmail.com](mailto:saki.tojo@gmail.com)>, 
+翻訳協力： One Pieceさん
 
 ウェブサイト：[https://zihou.pythonanywhere.com/](https://zihou.pythonanywhere.com/)
 
