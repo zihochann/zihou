@@ -176,6 +176,7 @@ def launch_notify(queue: Queue, reflect: Queue):
                 elif cmd == 'login':
                     tuser, tpass = args
                     login_result = tasks.sender.login(tuser, tpass)
+                    print('Login status', login_result)
                     reflect.put(login_result)
                 elif cmd == 'exit':
                     exit_flag = True
