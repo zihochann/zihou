@@ -153,6 +153,7 @@ def remove_live_by_id(request):
 def render_new_live(request):
     vtb_codes, vtb_num = vtb_checkboxs()
     current = now_jp_time()
+    current = datetime(year=current.year, month=current.month, day=current.day)
     return loader.render_to_string(
         'live_editor.html',
         {'title': '新しい予約',
