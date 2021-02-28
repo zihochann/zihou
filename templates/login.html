@@ -46,6 +46,7 @@
                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value};
             $.ajax({
                 type: 'POST',
+                timeout: 0,
                 url:"/login/",
                 data: data,
                 dataType : "json",

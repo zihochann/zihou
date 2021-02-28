@@ -44,6 +44,7 @@
         $.ajax({
             type: 'POST',
             url:"/notify/",
+            timeout: 0,
             data: {
                 op: '{{ operate }}',
                 tuser: t_user.val(),
