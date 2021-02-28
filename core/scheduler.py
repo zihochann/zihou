@@ -7,6 +7,7 @@ from django.template import loader
 from core.models import Live
 from core.vtuber import vtb_checkboxs
 from core.notification import Notifier, live_data
+from core.notify_proc import now_jp_time
 
 JAPAN_STD_UTC = pytz.timezone('Asia/Tokyo')
 
@@ -151,7 +152,7 @@ def remove_live_by_id(request):
 
 def render_new_live(request):
     vtb_codes, vtb_num = vtb_checkboxs()
-    current = datetime.now()
+    current = now_jp_time()
     return loader.render_to_string(
         'live_editor.html',
         {'title': '新しい予約',
