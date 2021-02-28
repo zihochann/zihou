@@ -1,13 +1,15 @@
 import threading
 import time
 import pytz
+from dateutil.tz import tzoffset
 from multiprocessing import Process, Queue
 from datetime import datetime, timedelta
 
 from core.msg_sender import MessageSender
 
 
-JAPAN_STD_UTC = pytz.timezone('Asia/Tokyo')
+# JAPAN_STD_UTC = pytz.timezone('Asia/Tokyo')
+JAPAN_STD_UTC = tzoffset('UTC', timedelta(hours=9))
 NOTIFY_RANGE = timedelta(minutes=5)
 # NOTIFY_RANGE = timedelta(hours=12)
 WAIT_MARGIN = 6
