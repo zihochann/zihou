@@ -171,6 +171,7 @@ def launch_notify(queue: Queue, reflect: Queue):
                     tasks.remove(args)
                 elif cmd == 'login':
                     tuser, tpass = args
+                    print('In proc login...')
                     reflect.put(tasks.sender.login(tuser, tpass))
                 elif cmd == 'exit':
                     exit_flag = True
@@ -258,6 +259,7 @@ class Notifier:
     def login(self, tuser, tpass):
         if self.running:
             # Send the command.
+            print('Start login with', tuser, tpass)
             self.send(['login', [tuser, tpass]])
             # Now hold and wait for the result.
             result = False

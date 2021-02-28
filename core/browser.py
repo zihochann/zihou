@@ -32,9 +32,11 @@ class Driver:
         else:
             options.add_argument('--headless')
             driver_path = 'chromedriver'
+        print('Starting browser...')
         self.browser = webdriver.Chrome(executable_path=driver_path,
                                         options=options)
         self.wait = WebDriverWait(self.browser, timeout=60)
+        print('browser ready.')
 
     def shutdown(self):
         # Shutdown the browser.
