@@ -83,7 +83,6 @@ def notify(request):
                            render_notify_status(request))
     if request.method == 'POST':
         result = notify_operate(request)
-        print('Notify result is', result)
         return JsonResponse(result)
     return STD_ERROR_404
 

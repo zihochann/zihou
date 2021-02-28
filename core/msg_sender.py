@@ -27,9 +27,7 @@ class MessageSender:
             return
         self.initialized = True
         # Login in the driver.
-        print('Starting driver...')
         self.driver = Driver()
-        print('Driver ready.')
         # Save the username and password.
         self.buf_u = ''
         self.buf_p = ''
@@ -39,7 +37,6 @@ class MessageSender:
         self.driver.shutdown()
         
     def __execute_login(self, buf_u, buf_p):
-        print('doing login...')
         # Not try for empty data.
         if len(buf_u) == 0 or len(buf_p) == 0:
             return False
@@ -93,13 +90,11 @@ class MessageSender:
         # Save the username and password.
         self.buf_u = buf_u
         self.buf_p = buf_p
-        print('complete?')
         return True
 
     def login(self, buf_u, buf_p):
         # Goto login
         try:
-            print('launching login URL...')
             self.driver.browser.get('https://twitter.com/login')
             self.driver.wait.until(
                 expected.visibility_of_element_located((By.TAG_NAME, 'form')))

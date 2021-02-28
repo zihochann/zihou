@@ -52,7 +52,6 @@
                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
             dataType : "json",
             success:function(response) {
-                console.log('received data??');
                 //Check the response.
                 if(response.status == 'ok') {
                     location.href='/notify/';
