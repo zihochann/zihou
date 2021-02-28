@@ -1,6 +1,5 @@
 import threading
 import time
-import pytz
 from dateutil.tz import tzoffset
 from multiprocessing import Process, Queue
 from datetime import datetime, timedelta
@@ -17,7 +16,8 @@ HEARTBEAT_MARGIN = 2
 MAX_TRIAL = 5
 
 # Forcast strings.
-TEST_MESSAGE = 'このツイートは自動ボットから送信されるテストツイートです。後で削除されます。\n'
+# TEST_MESSAGE = 'このツイートは自動ボットから送信されるテストツイートです。後で削除されます。\n'
+TEST_MESSAGE = ''
 LIVE_FORECAST = 'この後{}から{}で{}の配信が開始になります。'
 NAME_DOT = '・'
 HASH_TAG = '\n\n#時報組'
