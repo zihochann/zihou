@@ -14,6 +14,6 @@ urlpatterns = [
     path('vtbedit/', views.vtb_edit, name='vtb_edit'),
     path('vtbremove/', views.vtb_remove, name='vtb_remove'),
     path('notify/', views.notify, name='notify'),
-    path('useredit/', views.index, name='useredit'),
+    path('useredit/', views.user_edit, name='user_edit'),
     path('logout/', views.logout, name='logout'),
 ]

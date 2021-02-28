@@ -1,0 +1,70 @@
+<div class="container" style="margin-top: 15px;">
+    <div class="row">
+        <h3>ユーザー管理</h3>
+        <p>ユーザー名：{{ struser }}</p>
+        <form>
+            <div class="mb-3">
+                <label for="oldpassword" class="form-label">パスワード</label>
+                <input type="password" class="form-control" id="oldpassword">
+            </div>
+            <div class="mb-3">
+                <label for="newpassword" class="form-label">新しいパスワード</label>
+                <input type="password" class="form-control" id="newpassword">
+            </div>
+            <div class="mb-3">
+                <label for="dnewpassword" class="form-label">新しいパスワードを再入力</label>
+                <input type="password" class="form-control" id="dnewpassword">
+            </div>
+        </form>
+    </div>
+    <div class="row g-2 text-danger" style="padding-top: 12px;">
+        <span id="error-info"></span>
+    </div>
+    <div class="col-12" style="margin-top: 15px;">
+        <button class="btn btn-primary" id="btnop" type="button" onclick="info_update();">更新</button>
+    </div>
+</div>
+{% csrf_token %}
+<script>
+    function info_update() {
+        var t_info = $('#error-info');
+        // Check whether the password are the same or not.
+        var p = $('#oldpassword');
+        var np = $('#newpassword');
+        var dnp = $('#dnewpassword');
+        if(p.val().length == 0) {
+            t_info.html('エラー：パスワードが空です。');
+            return;
+        }
+        if(np.val().length > 0) {
+            // Check for the password.
+            if(np.val() != dnp.val()) {
+                t_info.html('エラー：新しいパスワードは同じではありません。');
+                return;
+            }
+        }
+        //Send the update request.
+        t_info.html('');
+        $.ajax({
+            type: 'POST',
+            url:"/useredit/",
+            data: {
+                ck: p.val(),
+                nck: np.val(),
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            },
+            dataType : "json",
+            success: function(response) {
+                //Check the response.
+                if(response.status == 'ok') {
+                    location.href = '/useredit'
+                    return;
+                }
+                //Now we have to display the error message.
+                $('#error-info').html("エラー：" + response.info);
+                t_button.removeAttr('disabled');
+                t_delbutton.removeAttr('disabled');
+            }
+        });
+    }
+</script>

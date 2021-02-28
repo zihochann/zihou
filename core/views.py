@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 
-from core.mod_user import user_login, user_logout
+from core.mod_user import *
 from core.scheduler import *
 from core.vtuber import *
 from core.notification import *
@@ -189,5 +189,16 @@ def logout(request):
     if request.method == 'GET':
         user_logout(request)
         return redirect('/')
+    # For all the other request.
+    return STD_ERROR_404
+
+
+def user_edit(request):
+    if request.method == 'GET':
+        return render_page(request, 'ユーザー管理', '',
+                           render_user_info(request))
+    if request.method == 'POST':
+        # Update the user info.
+        return JsonResponse(user_update(request))
     # For all the other request.
     return STD_ERROR_404
