@@ -149,7 +149,7 @@ def index(request):
     # Get the default.
     def get_current():
         # Get the current year and month.
-        current = datetime.now().date()
+        current = now_jp_time().date()
         return current.year, current.month
 
     if url_year is None or url_month is None:
