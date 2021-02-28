@@ -12,6 +12,7 @@ NOTIFY_RANGE = timedelta(minutes=5)
 # NOTIFY_RANGE = timedelta(hours=12)
 WAIT_MARGIN = 6
 HEARTBEAT_MARGIN = 2
+MAX_TRIAL = 5
 
 # Forcast strings.
 TEST_MESSAGE = 'このツイートは自動ボットから送信されるテストツイートです。後で削除されます。\n'
@@ -259,7 +260,14 @@ class Notifier:
             # Send the command.
             self.send(['login', [tuser, tpass]])
             # Now hold and wait for the result.
-            return self.reflect.get(timeout=60)
+            result = False
+            for _ in range(MAX_TRIAL):
+                try:
+                    result = self.reflect.get(timeout=60)
+                    break
+                except:
+                    continue
+            return result
         return False
 
     def send(self, command):
