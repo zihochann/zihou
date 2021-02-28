@@ -37,8 +37,10 @@ def notify_operate(request):
         for live in Live.objects.filter(dt__gte=now_jp_time()):
             live_info.append(live_data(live))
         notify_sys.init_lives(live_info)
+        print('provide the initial lives?')
     else:
         notify_sys.stop()
+    print('goes to status here.')
     return {'status': 'ok'}
 
 

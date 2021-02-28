@@ -82,7 +82,9 @@ def notify(request):
         return render_page(request, '通知システム', 'notify',
                            render_notify_status(request))
     if request.method == 'POST':
-        return JsonResponse(notify_operate(request))
+        result = notify_operate(request)
+        print('Notify result is', result)
+        return JsonResponse(result)
     return STD_ERROR_404
 
 
