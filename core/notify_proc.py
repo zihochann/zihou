@@ -253,7 +253,10 @@ class Notifier:
         # Check the time of the live.
         if self.running:
             # Check whether the time of the live is after current time.
-            if live[ID_TIME] > now_jp_time():
+            now_jp = now_jp_time()
+            print('add time check', live[ID_TIME], now_jp, live[ID_TIME] >
+                  now_jp)
+            if live[ID_TIME] > now_jp:
                 self.send(['add', live])
 
     def init_lives(self, lives):
